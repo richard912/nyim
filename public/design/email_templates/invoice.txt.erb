@@ -1,0 +1,18 @@
+Invoice
+
+Thank you for choosing New York Institutional Metrics Training (N.Y.I.M. Training) for your computer training needs.
+
+Amount charged: <%=  money(payment.amount) %>
+
+<% if payment.is_a? CreditCardPayment then %>
+  Credit Card: <%= payment.card.name  %>
+
+  Billing Address:
+
+  <%= payment.card.address.multi_line.join("\r\n") %>
+
+<% elsif payment.is_a? Cheque then %>
+
+  Check received from <%= payment.submitter.full_name %>
+
+<% end %>

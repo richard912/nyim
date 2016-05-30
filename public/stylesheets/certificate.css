@@ -1,0 +1,60 @@
+.display_certificate {
+  /* letter size */
+  position:absolute;
+  top:0;
+  width:800px;
+  height:600px;
+  text-align: center;
+  /* background-color:yellow; */
+  /* background: url('/images/certificate.jpg') no-repeat; */
+}
+
+.display_certificate_header_main{
+  padding-top:200px;
+}
+.display_certificate_header_one, .display_certificate_header_two{
+  display:inline-block;
+  font-size:32px;
+  text-align: left;
+}
+
+.display_certificate_header_one{
+  width: 18%;
+  margin-right: 90px;
+  text-align: right;
+}
+
+.display_certificate_completed{
+  padding-top: 30px;
+  color: #253B46;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.display_certificate_bottom{
+  text-align: left;
+  font-style: italic;
+  font-weight: bold;
+  padding: 40px 75px 0 95px;
+  color: #1A1A19;
+}
+
+.display_certificate_student {
+  color:black;
+  font-size:26pt;
+  padding-top: 40px;
+}
+
+.display_certificate_course {
+  color:black;
+  font-size:16pt;
+  padding-top:15px;
+}
+
+.display_certificate_date {
+  color:black;
+  font-size:16pt;
+  padding-top:30px;
+}
+

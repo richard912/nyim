@@ -1,0 +1,64 @@
+Check if mysql is installed on your system:
+  > mysql --version
+
+Check if mysql is installed on your system:
+  > mysql --version
+
+If it returns something, then you have mysql installed. If not you need to install it:
+  > brew update
+  > brew install mariadb
+
+MariaDb is a drop in replacement for MySQL. But has more sane defaults and is much more performant. Run mariadb:
+  > mysql.server start
+
+Check out NYIM github repository to your local drive:
+  > git clone git@github.com:3rdI/nyim.git
+
+Go inside that folder and install add dependencies:
+  > cd nyim
+  > bundle install
+
+After all gems are installed, you can easile setup database (create users and database itself) by running:
+  > rake db:setup
+
+Now you need to login to server and download latest backup. Latest one i found so fat is called 'nyim3_production.2013-07-05.sql'. I've used Transmit app to download it, you might use something else.
+
+This is found on the server at:
+  public_html/training-nyc.com/shared/backup
+
+Assuming you put the backup file to 'bckp/' directory of nyim project.
+  > mysql -uroot nyim3_development < bckp/nyim3_production.2013-07-05.sql
+
+if you have a password for root user (assuming, password is 'mypass'), then query should look like this:
+  > mysql -uroot -pmypass nyim3_development < bckp/nyim3_production.2013-07-05.sql
+
+Now you have a back-up database running on your local machine which you can use to run queries on.
+
+
+Backing up:
+ssh root@207.210.201.229
+mysqldump -uroot nyim3_production > "/root/nyim/shared/backup/dumpfile_$(date +"%m_%d_%Y").sql"
+
+You need to connect to 'nyim3_production' database and this is query you could run (modify DATE range as needed):
+
+select s.transaction_code, s.status,
+  c.name as course_name,
+  cg.name as group_name, cg.short_name as group_short_name,
+  teacher.first_name as teacher_fn, teacher.last_name as teacher_ln,
+  u.email as student_email, u.first_name as student_fn, u.last_name as student_ln,
+  comp.name as student_company,
+  sc.starts_at, sc.ends_at,
+  s.os, s.created_at, s.updated_at, s.price, s.payments_type
+
+FROM (SELECT signups.*, payments.type as payments_type
+      FROM signups LEFT JOIN payments ON signups.payment_id = payments.id) s,
+      courses c, scheduled_courses sc, users u, companies comp, users teacher, course_groups cg
+
+WHERE s.course_id = c.id
+  AND s.scheduled_course_id = sc.id
+  AND s.student_id = u.id
+  AND u.company_id = comp.id
+  AND sc.teacher_id = teacher.id
+  AND c.course_group_id = cg.id
+  AND s.created_at > DATE('2015-04-14')
+  AND s.created_at < DATE('2015-04-15');

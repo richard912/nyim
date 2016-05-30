@@ -1,0 +1,31 @@
+#roster
+  %br
+  = will_paginate(@courses)
+  %ul
+    - @courses.group_by{ |c| c.starts_at.beginning_of_day }.each do |day, courses|
+      %li
+        %p.group-date
+          = day.strftime('%B %d %A')
+          &mdash;
+          #{pluralize(courses.flat_map(&:attendances).count, 'student')} total
+        - courses.each do |course|
+          %p.course-name
+            = link_to "#{course.name} &mdash; #{course.start_time}".html_safe, scheduled_course_path(course)
+            [ #{link_to course.teacher.full_name, teacher_path(course.teacher)} ]
+            &mdash; #{pluralize(course.attendances.count, 'student')} total
+          %table
+            %tbody
+              - if course.attendances.count > 0
+                - course.attendances.each do |signup|
+                  %tr
+                    %td= link_to signup.student.full_name, signup_path(signup)
+                    %td= link_to signup.email, signup_path(signup)
+                    %td= signup.phone_number
+                    %td= signup.retake?
+                    %td= signup.os
+              - else
+                %tr
+                  %td.warning
+                    no students
+
+  = will_paginate(@courses)

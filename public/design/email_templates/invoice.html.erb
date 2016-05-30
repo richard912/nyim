@@ -1,0 +1,15 @@
+<h1>Invoice</h1>
+
+<p>Thank you for choosing New York Institutional Metrics Training (N.Y.I.M. Training) for your computer training needs.</p>
+
+<p>Amount charged: <%= money(payment.amount) %></p>
+
+<% if payment.is_a? CreditCardPayment then %>
+  <p>Credit Card: <%= payment.card.name  %></p>
+  <p>Billing Address: </p>
+  <p><%= payment.card.address.multi_line.join('<br>').html_safe %></p>
+
+<% elsif payment.is_a? Cheque then %>
+  <p>Check received from <%= payment.submitter.full_name %></p>
+
+<% end %>

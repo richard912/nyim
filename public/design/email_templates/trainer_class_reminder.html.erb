@@ -1,0 +1,18 @@
+<p>Hi <%= user.first_name %></p>
+
+  <div><% if course.attendants.any? %></div>
+    <p>Your class <%= course.name %> has the following signups:</p>
+
+    <div><% course.attendants.each do |student| %></div>
+      <div>
+          &nbsp;&bull;
+          <%= student.full_name %>
+          <%= student.email %>
+          <%= student.phone_number ? student.phone_number.to_s : 'no phone' %>
+          <%= course.os if course.os %>
+      </div>
+    <div><% end %></div>
+
+  <div><% else %></div>
+    <p>There are no signups for the <%= course.name %> class on this date</p>
+  <div><% end %></div>

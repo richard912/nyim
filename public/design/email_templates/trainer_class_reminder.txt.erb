@@ -1,0 +1,10 @@
+Hi <%= user.first_name %>
+
+<% if course.attendants.any? %>
+  Your class '<%= course.name %> has the following signups:
+  <% course.attendants.each do |student| %>
+    <%= student.full_name %> - <%= student.email %> - <%= phone = student.phone_number ? student.phone_number.to_s : 'no phone' %> - <%= course.os if course.os %>
+  <% end %>
+<% else %>
+  There are no signups for the <%= course.name %> class on this date
+<% end %>
